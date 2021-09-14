@@ -1,0 +1,57 @@
+.hidden{
+    display: none !important;    /* If we dont write imp then ID > class so display will be acc to what is mentioned in the ID*/
+}   
+body.dark{
+    background-color: rgb(49, 49, 49);
+    color: rgb(230, 210, 210);
+}
+body{
+    background-color: rgb(39, 30, 30);
+    color: white;
+}
+p.selected{
+    background-color: lightblue;
+}
+#game{
+    display: flex;
+    justify-content: center;
+}
+#board{                               /* sudoku board */
+    padding-top:10px;
+    margin-top:10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    width:600px;
+    height:600px;
+    background-color: slategrey;
+}
+.tile{                               /* tiles in board. JS class */
+    border: 1px solid black;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    margin: 0;
+    vertical-align: middle;
+    font-size: 40pt;
+}
+
+.numberPlate{
+    width: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-left: 50px;
+}
+.numberTile{
+    border: 1px solid black;
+    border-radius: 15%;
+    width: 60px;
+    height: 60px;
+    font-size: 30pt;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
