@@ -14,10 +14,12 @@ const hard = [
   ];
 
 var board;
+var solution;
 var timer;
 var lives;
 var selectedTile;
 var selectedNum;
+var disableSelect;
 
 
 function startGame(){
@@ -29,16 +31,20 @@ function startGame(){
        document.querySelector('body').classList.add('dark'); 
     
     // display initial lives   
+    lives=3;
     document.getElementById("lives").textContent = "Lives remaining : 3";
 
     // Generating board according to difficulty
     var diffLevel = getRadioValueSelected('diff');
     switch(diffLevel){
       case 'Easy'  : board = easy[0]; 
-                           break;
+                     solution = easy[1];
+                     break;
       case 'Medium': board = medium[0];
-                             break;
+                     solution = medium[1];
+                     break;
       default:       board = hard[0];
+                     solution = hard[1];
     }
     generateBoard(board);
 
@@ -51,35 +57,151 @@ function startGame(){
 } // func startGame()
 
 
+
 function generateBoard(board){ // generating initial board, everything should be deselected
      clearPrevious();
-     document.querySelector("#board").classList.remove("hidden"); // making empty board visible
+     let boardBox= document.querySelector("#board");
+     boardBox.classList.remove("hidden"); // making empty board visible
      let numbers;
      for(let i=0; i<81; i++){
-         numbers= board[i];
-         let tiles= document.createElement("p");
-         tiles.classList.add("tile");
-              if(numbers !== '-')
-                  tiles.appendChild(document.createTextNode(numbers));
-         let boardBox= document.querySelector("#board");
-         boardBox.append(tiles);
-         }//for
+           numbers= board[i];
+           let tile= document.createElement("p");
+           tile.classList.add("tile");
+                 if(numbers !== '-')
+                      tile.textContent= numbers;
+                 else{
+                   tile.addEventListener("click", function(){
+                     //If selection enabled
+                    if(!disableSelect){
+                      //if already selected then deselect
+                        if(tile.classList.contains("selected")){
+                              tile.classList.remove("selected");
+                              selectedTile=null;
+                        }//if
+                        else{
+                              //deslect everything snd select this tile
+                              for(let l=0; l<81; l++)
+                                   boardBox.children[l].classList.remove("selected");
+                               tile.classList.add("selected");
+                               selectedTile= tile;
+                               updateMove();  
+                            }//else
+                     }//if
+                   });
+                 }
+           boardBox.append(tile);
+           tile.id=i; // creating id's of tiles from '0' to '80'. Select a tile and in the insepct console do console.log(selectedTile) to get id.
+           }//for
       // Updating moves
       updateMove();
 }//func generateBoard
 
+function clearPrevious(){
+  
+}//clearPrevious
+
+
+function numberPallete(){
+  // creating number pallete
+  let numberPlate=document.getElementById("number-plate"); 
+  numberPlate.classList.remove("hidden"); 
+  numberPlate.classList.add("numberPlate");
+  for(let i=1; i<10; i++){
+        let tile= document.createElement("p");
+        let text= document.createTextNode(i);
+        tile.append(text);
+        numberPlate.appendChild(tile);
+        tile.classList.add("numberTile");
+  }//for
+  for(let i=0; i<9; i++){
+    // Adding Event listener
+    numberPlate.children[i].addEventListener("click", function(){
+         //if selecting enabled
+         if(!disableSelect){
+         // if number already selected, then deselect it
+               if(numberPlate.children[i].classList.contains("selected")){
+                       numberPlate.children[i].classList.remove("selected");
+                       selectedNum= null;
+                 }//if
+               else{ //if that tile is not selected then deselect all other tiles and select this tile
+                        for(let l=0; l<9; l++)
+                               numberPlate.children[l].classList.remove("selected");
+                       selectedNum= numberPlate.children[i].textContent;
+                       numberPlate.children[i].classList.add("selected");
+                       updateMove();
+                     }// else
+           }//if
+       }); // event listener
+  }//for
+}// func numberPallete
+
+
 
 function updateMove(){
+  //if selectedNum and selectedTile are not null
+  if(selectedNum && selectedTile){
+      selectedTile.textContent= selectedNum.textContent;
+       if(checkCorrect(selectedTile)){
+        // deselect the tiles
+        selectedNum.classList.remove("selected");
+        selectedTile.classList.remove("selected");
+        // clear the selected variables
+        selectedNum=null;
+        selectedTile=null;
+         // Check if all tiles are corrrect
+         if(checkDone())
+            endGame();
+       }
+       else{
+             // disable seleting new numbers for one second
+            disableSelect=true;
+            //make tile red
+            selectedTile.classList.add("incorrect");
+            // run in one second
+            setTimeout(function(){
+              //substract lives by one
+              lives--;
+              // if lives 0 endgame
+              if(lives===0)
+              endGame();
+              //if lives not 0
+              else{
+              // update lives text
+              document.getElementById("lives").textContent="Lives remaining: "+ lives;
+              disableSelect=false;
+              }
+              // restore tile color and remove selectedd from both
+              selectedTile.classList.remove("selected");
+              selectedTile.classList.remove("incorrect");
+              selectedNum.classList.remove("selected");
+              // clear tiles text and clear selected variables
+              selectedTile.textContent="";
+              selectedTile=null;
+              selectedNum=null;
+          }, 1000);
+        }//else
+   }//if
+}//func updateMove
 
+function checkCorrect(tile){
+   if(selectedNum.textContent == solution[selectedTile.id])
+   return true;
+   else
+   return false;
+}
+function endGame(){
+  disableSelect==true;
+  document.getElementById("timer").textContent= "---"
+  clearTimeout(timer);
+      //Display win or loss
+      if(lives===0 || timeRemaining===0)
+          document.getElementById("lives").textContent="You lost!!";
+      else
+          document.getElementById("lives").textContent="You won!!";
+      
 }
 
-function clearPrevious(){
-     selectedNum=null;
-     selectedTile=null;
 
-
-
-}//clearPrevious
 
 function startTimer(){
     var time = getRadioValueSelected('time'); 
@@ -91,7 +213,7 @@ function startTimer(){
                  break;
           default  : timeRemaining=60*60;
         }//switch
-    setInterval(function() {
+    timer= setInterval(function() {     //in endGame() we write 'clearTimeout(timer);' to stop timer
        timeRemaining--;
        if(timeRemaining===0)
        endGame();
@@ -110,20 +232,39 @@ function timeConversion(timeRemaining){
 }
 
 function numberPallete(){
+     // creating number pallete
      let numberPlate=document.getElementById("number-plate"); 
      numberPlate.classList.remove("hidden"); 
      numberPlate.classList.add("numberPlate");
      for(let i=1; i<10; i++){
-       let tile= document.createElement("p");
-       let text= document.createTextNode(i);
-       tile.append(text);
-       numberPlate.append(tile);
-       tile.classList.add("numberTile");
-       // Adding Event listener
-       
-
+        let tile= document.createElement("p");
+        let text= document.createTextNode(i);
+        tile.append(text);
+        numberPlate.appendChild(tile);
+        tile.classList.add("numberTile");
      }//for
-}// func numberPalette
+
+     for(let i=0; i<9; i++){
+       // Adding Event listener
+       numberPlate.children[i].addEventListener("click", function(){
+            //if selecting enabled
+            if(!disableSelect){
+            // if number already selected, then deselect it
+                  if(numberPlate.children[i].classList.contains("selected")){
+                          numberPlate.children[i].classList.remove("selected");
+                          selectedNum= null;
+                    }//if
+                  else{ //if that tile is not selected then deselect all other tiles and select this tile
+                           for(let l=0; l<9; l++)
+                                  numberPlate.children[l].classList.remove("selected");
+                          selectedNum= numberPlate.children[i];                            //selectedNum is the tile selected in the number-plate, selectedNum.textContent is the number
+                          numberPlate.children[i].classList.add("selected");
+                          updateMove();
+                        }// else
+              }//if
+          }); // event listener
+     }//for
+}// func numberPallete
 
 
    // helper func
