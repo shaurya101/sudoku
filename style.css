@@ -1,5 +1,19 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+html{
+    height: 100%; /* for footer */
+}
 body{
     background-color: #D9E4EC;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+header{
+    display: flex;
+    flex-direction: column;
 }
 h1{
     text-transform: uppercase;
@@ -7,18 +21,35 @@ h1{
     text-align: center;
     font-family: monospace;
     font-size: 7em;
-    margin-top:20px;
+    margin: 10px 0;
     text-shadow: 0 0 2px #385E72, 2px 2px 5px rgba(s0,0,0,0.3);
     cursor: default;
 }
 h3{
-    display: inline-block;
+    display: inline-block;          /* to make difficulty/theme/time and radio options on same line */
 }
 .settings{
-    display: flex;;
+    display: flex;
+    flex-direction: row;
     justify-content: space-around;
+    align-items: center;
     width:75%;
-    margin: auto;
+    margin: 10px auto;
+    height: 90px;
+}
+#startBtn{
+width: 100px;
+height: 30px;
+margin: 10px auto;
+text-align: center;
+line-height: 20px;
+}
+footer{
+    text-align: center;
+    width: 100vw;
+    height: 40px;
+    margin-top: auto; /* to put footer at the end since body is flex and min-heigh:100% and html is 100% */
+  
 }
 
 
