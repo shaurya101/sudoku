@@ -97,7 +97,22 @@ function generateBoard(board){ // generating initial board, everything should be
 }//func generateBoard
 
 function clearPrevious(){
-  
+    // removing all tiles from DOM so they dont overlap on new board
+    let tiles= document.querySelectorAll(".tile");
+    for(let i=0; i<tiles.length; i++)
+    tiles[i].remove();
+
+    //clearing timer if it is there
+    if(timer)
+    clearTimeout(timer);
+
+    let number= document.querySelectorAll(".number-plate");  //removing number plate from DOM as it will be generated again?
+      for(let i=0; i<number.length; i++)
+          number[i].remove();
+
+    //clear selected variables
+    selectedTile = null;
+    selectedNum = null;
 }//clearPrevious
 
 
@@ -108,10 +123,9 @@ function numberPallete(){
   numberPlate.classList.add("numberPlate");
   for(let i=1; i<10; i++){
         let tile= document.createElement("p");
-        let text= document.createTextNode(i);
-        tile.append(text);
-        numberPlate.appendChild(tile);
+        tile.textContent= i;
         tile.classList.add("numberTile");
+        numberPlate.append(tile);
   }//for
   for(let i=0; i<9; i++){
     // Adding Event listener
@@ -198,8 +212,7 @@ function endGame(){
           document.getElementById("lives").textContent="You lost!!";
       else
           document.getElementById("lives").textContent="You won!!";
-      
-}
+}// func endGame()
 
 
 
@@ -213,7 +226,7 @@ function startTimer(){
                  break;
           default  : timeRemaining=60*60;
         }//switch
-    timer= setInterval(function() {     //in endGame() we write 'clearTimeout(timer);' to stop timer
+    timer= setInterval(function() {     //in endGame() and clearPrevious() we write 'clearTimeout(timer);' to stop timer
        timeRemaining--;
        if(timeRemaining===0)
        endGame();
@@ -231,40 +244,6 @@ function timeConversion(timeRemaining){
     return `${minutes}:${seconds}`;
 }
 
-function numberPallete(){
-     // creating number pallete
-     let numberPlate=document.getElementById("number-plate"); 
-     numberPlate.classList.remove("hidden"); 
-     numberPlate.classList.add("numberPlate");
-     for(let i=1; i<10; i++){
-        let tile= document.createElement("p");
-        let text= document.createTextNode(i);
-        tile.append(text);
-        numberPlate.appendChild(tile);
-        tile.classList.add("numberTile");
-     }//for
-
-     for(let i=0; i<9; i++){
-       // Adding Event listener
-       numberPlate.children[i].addEventListener("click", function(){
-            //if selecting enabled
-            if(!disableSelect){
-            // if number already selected, then deselect it
-                  if(numberPlate.children[i].classList.contains("selected")){
-                          numberPlate.children[i].classList.remove("selected");
-                          selectedNum= null;
-                    }//if
-                  else{ //if that tile is not selected then deselect all other tiles and select this tile
-                           for(let l=0; l<9; l++)
-                                  numberPlate.children[l].classList.remove("selected");
-                          selectedNum= numberPlate.children[i];                            //selectedNum is the tile selected in the number-plate, selectedNum.textContent is the number
-                          numberPlate.children[i].classList.add("selected");
-                          updateMove();
-                        }// else
-              }//if
-          }); // event listener
-     }//for
-}// func numberPallete
 
 
    // helper func
