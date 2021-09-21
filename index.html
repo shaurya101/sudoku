@@ -11,25 +11,33 @@
         <header>
             <h1>Sudoku</h1>
 
-            <h3>Difficulty : </h3>
-            <label for="diff"></label>
-            <input type="radio" name="diff" value="Easy" checked>Easy
-            <input type="radio" name="diff" value="Medium">Medium
-            <input type="radio" name="diff" value="Hard">Hard
+            <div class = "settings">
+                 <div>
+                     <h3>Difficulty : </h3>
+                     <label for="diff"></label>
+                     <input type="radio" name="diff" value="Easy" checked> Easy
+                     <input type="radio" name="diff" value="Medium"> Medium
+                     <input type="radio" name="diff" value="Hard"> Hard
+                 </div>
 
-            <h3>Time : </h3>
-            <input type="radio" name="time" value="30" checked>30 Min
-            <input type="radio" name="time" value="45">45 Min
-            <input type="radio" name="time" value="60">60 Min
+                <div>
+                     <h3>Time : </h3>
+                     <input type="radio" name="time" value="30" checked> 30 Min
+                     <input type="radio" name="time" value="45"> 45 Min
+                     <input type="radio" name="time" value="60"> 60 Min
+                 </div>
 
-            <h3>Theme : </h3>
-            <input type="radio" name="theme" value="Light">Light
-            <input type="radio" name="theme" value="Dark" checked>Dark
+                 <div>
+                     <h3>Theme : </h3>
+                     <input type="radio" name="theme" value="Light"> Light
+                     <input type="radio" name="theme" value="Dark" checked> Dark
+                 </div>
+            </div>
 
             <button id="startBtn" onclick="startGame()">New Game</button>
         </header>
 
-        <div id="stats">
+        <div id="stats" class="stats">
             <p id="timer"></p>
             <p id="lives"></p>
         </div>
