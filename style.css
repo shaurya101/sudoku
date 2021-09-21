@@ -49,7 +49,7 @@ footer{
     justify-content: center;
     align-items: center;
     width: 100vw;
-    height: 40px;
+    height: 60px;
     margin-top: auto; /* to put footer at the end since body is flex and min-heigh:100% and html is 100% */
 }
 
@@ -113,4 +113,16 @@ p.selected{
 }
 .incorrect{
     color: red;
+}
+.stats{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90px;
+    font-size: 40px;
+    padding: 40px;
+}
+#timer{
+    padding-bottom: 10px;
 }
