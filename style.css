@@ -25,6 +25,9 @@ h1{
     text-shadow: 0 0 2px #385E72, 2px 2px 5px rgba(s0,0,0,0.3);
     cursor: default;
 }
+h1.darkk{
+    color: #b7cfdc;
+}
 h3{
     display: inline-block;          /* to make difficulty/theme/time and radio options on same line */
 }
@@ -61,7 +64,7 @@ footer{
     display: none !important;    /* If we dont write imp then ID > class so display will be acc to what is mentioned in the ID*/
 }   
 body.dark{
-    background-color: rgb(49, 49, 49);
+    background-color: #082032;
     color: rgb(230, 210, 210);
 }
 p.selected{
@@ -80,7 +83,10 @@ p.selected{
     align-content: center;
     width:600px;
     height:600px;
-    background-color: slategrey;
+    background-color: #B7CFDC;
+}
+#board.boardDark{
+    background-color: slategray;
 }
 .tile{                               /* tiles in board. JS class */
     border: 1px solid black;
