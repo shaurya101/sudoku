@@ -25,10 +25,16 @@ var disableSelect;
 function startGame(){
     // Changing theme
     var theme = getRadioValueSelected('theme');
-    if(theme === 'Light')
+    if(theme === 'Light'){
        document.querySelector('body').classList.remove('dark');
-    else
+       document.querySelector('h1').classList.remove('darkk'); 
+       document.querySelector('#board').classList.remove('boardDark');
+    }
+    else{
        document.querySelector('body').classList.add('dark'); 
+       document.querySelector('h1').classList.add('darkk'); 
+       document.querySelector('#board').classList.add('boardDark');
+    }
     
     // display initial lives   
     lives=3;
@@ -255,4 +261,3 @@ function getRadioValueSelected(name){
         if(buttonList[i].checked)
            return buttonList[i].value;
 }
-
