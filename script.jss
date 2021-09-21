@@ -106,13 +106,14 @@ function clearPrevious(){
     if(timer)
     clearTimeout(timer);
 
-    let number= document.querySelectorAll(".number-plate");  //removing number plate from DOM as it will be generated again?
+    let number= document.querySelectorAll(".numberTile");  //removing number plate from DOM as it will be generated again?
       for(let i=0; i<number.length; i++)
           number[i].remove();
 
     //clear selected variables
     selectedTile = null;
     selectedNum = null;
+    disableSelect=false;
 }//clearPrevious
 
 
@@ -140,7 +141,7 @@ function numberPallete(){
                else{ //if that tile is not selected then deselect all other tiles and select this tile
                         for(let l=0; l<9; l++)
                                numberPlate.children[l].classList.remove("selected");
-                       selectedNum= numberPlate.children[i].textContent;
+                       selectedNum= numberPlate.children[i];
                        numberPlate.children[i].classList.add("selected");
                        updateMove();
                      }// else
